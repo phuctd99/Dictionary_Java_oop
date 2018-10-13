@@ -1,13 +1,16 @@
 package dictionary;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Comparator;
 
 public class DictionaryManagement {
@@ -28,7 +31,6 @@ public class DictionaryManagement {
 	}
         
 	public void dictionaryLookup(){
-                sortListWord();
 		System.out.println("Nhập từ cần tìm: ");
 		String wordLookup = sc.nextLine().trim();
                 Word word = new Word(wordLookup);
@@ -106,30 +108,25 @@ public class DictionaryManagement {
 		}
 	}
         public static void insertFromFile() {
-       File fileDic = new File( "Dictionary.txt" );
-       try( Scanner sc = new Scanner( fileDic)) {
-           while ( sc.hasNextLine()) {
-               Word word = new Word(); //Tao ra mot bien kieu Word
-               String line = sc.nextLine(); //Lấy nội dung một dòng text lưu vào biến oneLine
-               //line = line.toLowerCase();
-               int countTarget = 0;
-               String newOneLine = line.replace( "\ufeff", "");
-               for( int i=0; i<newOneLine.length(); i++) { //vòng for để lưu biến word_target
-                   if( newOneLine.charAt( i ) == 9 ) {    // ascii cua tab =9
-                       countTarget = i;
-                       word.setWord_target(newOneLine.substring( 0, countTarget));
-                       word.setWord_explain(newOneLine.substring( i+1));
-                       break;
-                   }
-               }
-               Dictionary.listWord.add( word ); 
-           }
-       }
-       catch ( IOException ex) {
-           System.err.println( ex.getMessage());
-       }
-    }
-	
+		try {
+			FileInputStream fis = new FileInputStream("Dictionary.txt");
+			InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+			BufferedReader br = new BufferedReader(isr);
+			String line = br.readLine();
+			while(line != null) {
+				String newOneLine = line.replace("\ufeff", "");
+				String []arr = newOneLine.split("\t");
+				Dictionary.listWord.add(new Word(arr[0], arr[1]));
+				line = br.readLine();
+			}
+			br.close();
+			isr.close();
+			fis.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	public void dictionaryExportToFile() {
 		try {
 			FileOutputStream fos = new FileOutputStream("Output.txt");
