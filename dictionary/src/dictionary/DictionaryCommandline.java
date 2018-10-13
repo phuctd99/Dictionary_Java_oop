@@ -7,7 +7,7 @@ public class DictionaryCommandline {
 	Scanner sc = new Scanner(System.in);
 
 	public void showAllWord() {
-                dictionarymanagement.sortListWord();
+                //dictionarymanagement.sortListWord();
 		System.out.println("|No |English            |Vietnamese");
 		for (int i = 0; i < Dictionary.listWord.size(); i++) {
 			Word word = Dictionary.listWord.get(i);
