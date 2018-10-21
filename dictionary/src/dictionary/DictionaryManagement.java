@@ -60,7 +60,11 @@ public class DictionaryManagement {
                     System.out.println("Từ này đã tồn tại! ");
                 }
 	}
-
+        public void addWord(String s1, String s2){
+            Word word = new Word(s1,s2);
+            Dictionary.listWord.add(word);
+            sortListWord();
+        }
 	// xoa tu
 	public void deleteWord() {
 		System.out.println("Nhập từ muốn xóa: ");
@@ -73,7 +77,11 @@ public class DictionaryManagement {
                 }
                 else System.out.println("Không tìm thấy từ này!");
 	}
-
+        public void deleteWord(String wordDelete){
+                Word word = new Word(wordDelete);
+                int pos = Collections.binarySearch(Dictionary.listWord, word, WordtargetComparator);
+                Dictionary.listWord.remove(pos);
+        }
 	// sua tu
 	public void editWord() {
 		System.out.println("Nhập từ muốn thay thế: ");
@@ -88,7 +96,13 @@ public class DictionaryManagement {
                     System.out.println("Không tìm thấy từ này!");
                 }
 	}
-	
+	public void editWord(String old, String new1, String mean){
+                int pos = binarySearchWord(old);
+                if(pos>=0){
+                    Dictionary.listWord.remove(pos);
+                    addWord(new1, mean);
+                }
+        }
 	// ham tim kiem cac tu
 	public void dictionarySearcher() {
 		System.out.println("Nhập từ cần tìm: ");
@@ -107,7 +121,7 @@ public class DictionaryManagement {
 			i++;
 		}
 	}
-        public static void insertFromFile() {
+        public  void insertFromFile() {
 		try {
 			FileInputStream fis = new FileInputStream("Dictionary.txt");
 			InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
@@ -158,5 +172,10 @@ public class DictionaryManagement {
 	public void sortListWord() {
 		Collections.sort(Dictionary.listWord,  WordtargetComparator);
 	}
+        public int binarySearchWord(String word){
+            Word newWord = new Word(word);
+            return Collections.binarySearch(Dictionary.listWord, newWord, WordtargetComparator);
+        }
+        
 }
 	

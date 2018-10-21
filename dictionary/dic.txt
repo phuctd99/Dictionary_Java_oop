@@ -1,0 +1,5 @@
+﻿cat	con mèo
+dog	con chó
+new	mới
+old	cũ
+sell	bán
